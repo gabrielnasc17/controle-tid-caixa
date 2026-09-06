@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <base target="_top">
+  <?!= include("Style"); ?>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+    <img src="">
+    <h1>CONTROLE </h1>
+</div>
+
+<div class="tabs">
+
+    <button class="tab active" onclick="abrirAba('rm', this)">
+        RM
+    </button>
+
+    <button class="tab" onclick="abrirAba('ds', this)">
+        ENTRADA DS
+    </button>
+
+    <button class="tab" onclick="abrirAba('checkin', this)">
+        CHECK-IN
+    </button>
+
+    <button class="tab" onclick="abrirAba('checkout', this)">
+        CHECK-OUT
+    </button>
+
+    <button class="tab" onclick="abrirAba('checkoutrm', this)">
+    CHECK-OUT RM
+    </button>
+
+</div>
+
+<!-- ================= RM ================= -->
+
+<div id="rm">
+
+    <div class="conteudo">
+
+        <div class="esquerda">
+
+            <label>ETIQUETA DE ENVIO</label>
+            <input type="text" id="rmEtiqueta">
+
+            <br><br>
+
+            <label>TID</label>
+            <input
+                type="text"
+                id="rmTid"
+                placeholder="Bipar TID"
+                onkeypress="if(event.key=='Enter') adicionarTidRM()">
+
+            <br><br>
+
+            <button class="botao" onclick="salvarRMFront()">
+                SALVAR RM
+            </button>
+
+            <br><br>
+
+<button
+    class="botao"
+    onclick="baixarCSV('RM')">
+
+    EXPORTAR CSV
+
+</button>
+
+        </div>
+
+        <div class="direita">
+
+            <div class="topoLista">
+                <span>📋 TIDs da Etiqueta</span>
+                <span id="contadorRM">0</span>
+            </div>
+
+            <div class="lista" id="listaRM"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= ENTRADA DS ================= -->
+
+<div id="ds" style="display:none;">
+
+    <div class="conteudo">
+
+        <div class="esquerda">
+
+            <label>ETIQUETA DE ENVIO</label>
+
+            <input
+                type="text"
+                id="dsEtiqueta">
+
+            <br><br>
+
+            <button
+                class="botao"
+                onclick="carregarEtiquetaRM()">
+
+                CARREGAR ETIQUETA
+
+            </button>
+
+            <br><br>
+
+            <label>VALIDAR TID</label>
+
+            <input
+                type="text"
+                id="dsTid"
+                placeholder="Bipar TID"
+                onkeypress="if(event.key=='Enter') validarTidDS()">
+
+            <br><br>
+
+            <button
+                class="botao"
+                onclick="salvarEntradaDSFront()">
+
+                SALVAR ENTRADA DS
+
+            </button>
+
+            <br><br>
+
+<button
+    class="botao"
+    onclick="baixarCSV('ENTRADA DS')">
+
+    EXPORTAR CSV
+
+</button>
+
+        </div>
+
+        <div class="direita">
+
+            <div class="topoLista">
+                <span>📋 Auditoria Entrada DS</span>
+                <span id="contadorDS">0 / 0</span>
+            </div>
+
+            <div class="lista" id="listaDS"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CHECK-IN ================= -->
+
+<div id="checkin" style="display:none;">
+
+    <div class="conteudo">
+
+        <div class="esquerda">
+
+            <label>CAIXA (MÃE)</label>
+
+            <input
+                type="text"
+                id="cxCheckin">
+
+            <br><br>
+
+            <label>ETIQUETA DE ENVIO</label>
+
+            <input
+                type="text"
+                id="etiquetaCheckin"
+                placeholder="Bipar Etiqueta"
+                onkeypress="if(event.key=='Enter') adicionarEtiqueta()">
+
+            <br><br>
+
+            <label>VALIDAR TID</label>
+
+            <input
+                type="text"
+                id="tidCheckin"
+                placeholder="Bipar TID"
+                onkeypress="if(event.key=='Enter') validarTidCheckin()">
+
+            <br><br>
+
+            <button
+                class="botao"
+                onclick="salvarCheckinFront()">
+
+                SALVAR CAIXA
+
+            </button>
+
+            <br><br>
+
+<button
+    class="botao"
+    onclick="baixarCSV('CHECK-IN')">
+
+    EXPORTAR CSV
+
+</button>
+
+        </div>
+
+        <div class="direita">
+
+            <div class="topoLista">
+                <span>📦 TIDs DA ETIQUETA ATUAL</span>
+                <span id="contadorEtiqueta">0</span>
+            </div>
+
+            <div class="lista"
+                 id="listaEtiqueta">
+            </div>
+
+            <br>
+
+            <div class="topoLista">
+                <span>📋 ITENS ADICIONADOS À CAIXA</span>
+                <span id="contadorCheckin">0</span>
+            </div>
+
+            <div class="lista"
+                 id="listaCheckin">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CHECK-OUT ================= -->
+
+<div id="checkout" style="display:none;">
+
+    <div class="conteudo">
+
+        <div class="esquerda">
+
+            <label>CAIXA (MÃE)</label>
+
+            <input
+                type="text"
+                id="cxCheckout">
+
+            <br><br>
+
+            <button
+                class="botao"
+                onclick="carregarCaixa()">
+
+                CARREGAR CAIXA
+
+            </button>
+
+            <br><br>
+
+            <label>ASSET TRACKING</label>
+
+            <input
+                type="text"
+                id="assetTracking"
+                placeholder="Bipar Asset Tracking">
+
+            <br><br>
+
+            <label>VALIDAR ITEM (TID)</label>
+
+            <input
+                type="text"
+                id="tidCheckout"
+                placeholder="Bipar TID"
+                onkeypress="if(event.key=='Enter') localizarTid()">
+
+            <br><br>
+
+            <button
+                class="botao"
+                id="btnFinalizar"
+                disabled
+                onclick="finalizarCaixa()">
+
+                FINALIZAR CAIXA
+
+            </button>
+
+            <br><br>
+
+<button
+    class="botao"
+    onclick="baixarCSV('CHECK-OUT')">
+
+    EXPORTAR CSV
+
+</button>
+
+        </div>
+
+        <div class="direita">
+
+            <div class="topoLista">
+                <span>📋 ITENS EM AUDITORIA</span>
+                <span id="contadorCheckout">0 / 0</span>
+            </div>
+
+            <div
+                class="lista"
+                id="listaCheckout">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CHECK-OUT RM ================= -->
+
+<div id="checkoutrm" style="display:none;">
+
+    <div class="conteudo">
+
+        <div class="esquerda">
+
+            <label>ASSET TRACKING</label>
+
+            <input
+                type="text"
+                id="assetRM">
+
+            <br><br>
+
+            <button
+                class="botao"
+                onclick="carregarAssetRM()">
+
+                CARREGAR ASSET
+
+            </button>
+
+            <br><br>
+
+            <label>VALIDAR TID</label>
+
+            <input
+                type="text"
+                id="tidRM"
+                placeholder="Bipar TID"
+                onkeypress="if(event.key=='Enter') validarTidRM()">
+
+            <br><br>
+
+            <button
+                class="botao"
+                onclick="salvarCheckOutRMFront()">
+
+                FINALIZAR RM
+
+            </button>
+
+            <br><br>
+
+            <button
+                class="botao"
+                onclick="baixarCSV('CHECK-OUT RM')">
+
+                EXPORTAR CSV
+
+            </button>
+
+        </div>
+
+        <div class="direita">
+
+            <div class="topoLista">
+
+                <span>📋 ITENS DO ASSET</span>
+
+                <span id="contadorRMOut">0 / 0</span>
+
+            </div>
+
+            <div
+                class="lista"
+                id="listaRMOut">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+
+    <span class="statusOnline">
+        ● SISTEMA ONLINE
+    </span>
+
+    <span>
+        PROJETO / SITE
+    </span>
+
+</div>
+
+</div>
+
+
+<?!= include("Script"); ?>
+
+</body>
+</html>
