@@ -1,0 +1,787 @@
+<script>
+
+let listaRM = [];
+let listaDS = [];
+
+let etiquetasCheckin = [];
+let tidsEtiquetaAtual = [];
+let itensCaixa = [];
+
+let itensAuditoria = [];
+
+let itensRM = [];
+
+
+// ================= ABAS =================
+
+function abrirAba(nome, botao){
+
+    document.getElementById("rm").style.display="none";
+    document.getElementById("ds").style.display="none";
+    document.getElementById("checkin").style.display="none";
+    document.getElementById("checkout").style.display="none";
+    document.getElementById("checkoutrm").style.display="none";
+
+    document.getElementById(nome).style.display="block";
+
+    document.querySelectorAll(".tab").forEach(tab=>{
+        tab.classList.remove("active");
+    });
+
+    if(botao){
+        botao.classList.add("active");
+    }
+}
+
+
+// ================= RM =================
+
+function adicionarTidRM(){
+
+    let tid = document.getElementById("rmTid").value.trim();
+
+    if(!tid) return;
+
+    if(tid.length !== 13){
+
+        alert("TID Incorreta");
+
+        document.getElementById("rmTid").value="";
+        document.getElementById("rmTid").focus();
+
+        return;
+    }
+
+    if(listaRM.includes(tid)){
+
+        alert("TID já adicionada.");
+
+        document.getElementById("rmTid").value="";
+        document.getElementById("rmTid").focus();
+
+        return;
+    }
+
+    listaRM.push(tid);
+
+    atualizarListaRM();
+
+    document.getElementById("rmTid").value="";
+    document.getElementById("rmTid").focus();
+}
+
+function atualizarListaRM(){
+
+    let html="";
+
+    listaRM.forEach(function(tid){
+
+        html += `
+        <div class="item">
+            ${tid}
+        </div>
+        `;
+
+    });
+
+    document.getElementById("listaRM").innerHTML = html;
+    document.getElementById("contadorRM").innerHTML = listaRM.length;
+}
+
+function salvarRMFront(){
+
+    let etiqueta = document.getElementById("rmEtiqueta").value.trim();
+
+    if(!etiqueta){
+        alert("Informe a etiqueta.");
+        return;
+    }
+
+    if(listaRM.length === 0){
+        alert("Nenhuma TID adicionada.");
+        return;
+    }
+
+    google.script.run
+    .withSuccessHandler(function(){
+
+        alert("RM salvo com sucesso.");
+
+        listaRM=[];
+
+        atualizarListaRM();
+
+        document.getElementById("rmEtiqueta").value="";
+        document.getElementById("rmTid").value="";
+
+    })
+    .salvarRM(etiqueta, listaRM);
+}
+
+
+// ================= ENTRADA DS =================
+
+function carregarEtiquetaRM(){
+
+    let etiqueta =
+    document.getElementById("dsEtiqueta").value.trim();
+
+    if(!etiqueta){
+        alert("Informe a etiqueta.");
+        return;
+    }
+
+    google.script.run
+    .withSuccessHandler(function(lista){
+
+    listaDS = [];
+
+    lista.forEach(function(item){
+
+        listaDS.push({
+            tid: item.tid,
+            status: item.status
+        });
+
+    });
+
+    atualizarListaDS();
+
+})
+    .buscarEtiquetaRM(etiqueta);
+
+}
+function validarTidDS(){
+
+    let tid = document.getElementById("dsTid").value.trim();
+
+    if(!tid) return;
+
+    let encontrou=false;
+
+    listaDS.forEach(function(item){
+
+        if(item.tid === tid){
+
+            item.status="VALIDADA";
+            encontrou=true;
+
+        }
+
+    });
+
+    if(!encontrou){
+        alert("TID não pertence à etiqueta.");
+    }
+
+    atualizarListaDS();
+
+    document.getElementById("dsTid").value="";
+    document.getElementById("dsTid").focus();
+}
+
+function atualizarListaDS(){
+
+    let html="";
+    let validadas=0;
+
+    listaDS.forEach(function(item){
+
+        if(item.status==="VALIDADA"){
+            validadas++;
+        }
+
+        html += `
+        <div class="item">
+
+            <span>${item.tid}</span>
+
+            <span class="${
+                item.status==="VALIDADA"
+                ? "badgeVerde"
+                : "badgeVermelha"
+            }">
+
+                ${item.status}
+
+            </span>
+
+        </div>
+        `;
+
+    });
+
+    document.getElementById("listaDS").innerHTML=html;
+
+    document.getElementById("contadorDS").innerHTML=
+        validadas+" / "+listaDS.length;
+}
+
+function salvarEntradaDSFront(){
+
+    let etiqueta=document.getElementById("dsEtiqueta").value.trim();
+
+    let tids=[];
+
+    listaDS.forEach(function(item){
+
+        if(item.status==="VALIDADA"){
+            tids.push(item.tid);
+        }
+
+    });
+
+    if(tids.length===0){
+
+        alert("Nenhuma TID validada.");
+
+        return;
+    }
+
+    if(tids.length !== listaDS.length){
+
+    alert("Existem TIDs pendentes.");
+
+    return;
+}
+
+    google.script.run
+    .withSuccessHandler(function(){
+
+        alert("Entrada DS salva.");
+
+        listaDS=[];
+
+        atualizarListaDS();
+
+        document.getElementById("dsEtiqueta").value="";
+        document.getElementById("dsTid").value="";
+
+    })
+    .salvarEntradaDS(etiqueta,tids);
+}
+
+
+// ================= CHECK-IN ================= //
+
+function adicionarEtiqueta(){
+
+    let etiqueta = document.getElementById("etiquetaCheckin").value.trim();
+
+    if(!etiqueta) return;
+
+    google.script.run
+    .withSuccessHandler(function(retorno){
+
+        if(!retorno.found){
+
+            alert("Etiqueta não encontrada na Entrada DS.");
+            return;
+
+        }
+
+        // só adiciona depois de confirmar que existe
+        if(!etiquetasCheckin.includes(etiqueta)){
+            etiquetasCheckin.push(etiqueta);
+        }
+
+        tidsEtiquetaAtual = [];
+
+        retorno.tids.forEach(function(item){
+
+    tidsEtiquetaAtual.push({
+        etiqueta: etiqueta,
+        tid: item.tid,
+        status: item.status
+    });
+
+
+});
+
+        atualizarListaEtiqueta();
+        atualizarListaCheckin();
+
+        document.getElementById("etiquetaCheckin").value = "";
+        document.getElementById("tidCheckin").focus();
+
+    })
+    .withFailureHandler(function(err){
+
+        alert(err.message);
+
+    })
+    .buscarTidsDaEtiqueta(etiqueta);
+}
+
+
+
+function validarTidCheckin(){
+
+    let tid = document.getElementById("tidCheckin").value.trim();
+
+    if(!tid) return;
+
+    let encontrou = false;
+
+    tidsEtiquetaAtual.forEach(function(item){
+
+        if(item.tid === tid && item.status !== "VALIDADA"){
+
+            item.status = "VALIDADA";
+
+            encontrou = true;
+
+            itensCaixa.push({
+                etiqueta: item.etiqueta,
+                tid: item.tid
+            });
+
+        }
+
+    });
+
+    if(!encontrou){
+
+    let jaNaCaixa = itensCaixa.some(function(item){
+        return item.tid === tid;
+    });
+
+    if(jaNaCaixa){
+
+        alert("TID já adicionada à caixa.");
+
+    }else{
+
+        alert("TID não pertence à etiqueta atual.");
+
+    }
+
+}
+
+    atualizarListaEtiqueta();
+    atualizarListaCheckin();
+
+    document.getElementById("tidCheckin").value = "";
+    document.getElementById("tidCheckin").focus();
+}
+
+
+
+function atualizarListaEtiqueta(){
+
+    let html = "";
+
+    tidsEtiquetaAtual.forEach(function(item){
+
+        html += `
+        <div class="item">
+            <span>${item.tid}</span>
+
+            <span class="${
+                item.status === "VALIDADA"
+                ? "badgeVerde"
+                : "badgeVermelha"
+            }">
+                ${item.status}
+            </span>
+        </div>
+        `;
+
+    });
+
+    document.getElementById("listaEtiqueta").innerHTML = html;
+    document.getElementById("contadorEtiqueta").innerHTML = tidsEtiquetaAtual.length;
+}
+
+
+
+function atualizarListaCheckin(){
+
+    let html = "";
+
+    itensCaixa.forEach(function(item){
+
+        html += `
+        <div class="item">
+            <span>${item.etiqueta}</span>
+            <span>${item.tid}</span>
+        </div>
+        `;
+
+    });
+
+    document.getElementById("listaCheckin").innerHTML = html;
+    document.getElementById("contadorCheckin").innerHTML = itensCaixa.length;
+}
+
+
+
+function salvarCheckinFront(){
+
+    let caixa = document.getElementById("cxCheckin").value.trim();
+
+    if(!caixa){
+
+        alert("Informe a caixa.");
+        return;
+
+    }
+
+    if(itensCaixa.length===0){
+
+    alert("Nenhuma TID validada.");
+    return;
+
+}
+
+let pendentes = tidsEtiquetaAtual.filter(
+    item => item.status !== "VALIDADA"
+);
+
+
+if(pendentes.length > 0){
+
+    let dividir = confirm(
+        "Existem " + pendentes.length + 
+        " TIDs pendentes.\n\n" +
+        "Deseja adicionar os sobrantes em outra caixa?"
+    );
+
+
+    if(!dividir){
+
+        // Continua na mesma etapa
+        return;
+
+    }
+
+}
+
+    google.script.run
+    .withSuccessHandler(function(){
+
+        alert("Check-In salvo com sucesso.");
+
+        etiquetasCheckin = [];
+        tidsEtiquetaAtual = [];
+        itensCaixa = [];
+
+        atualizarListaEtiqueta();
+        atualizarListaCheckin();
+
+        document.getElementById("cxCheckin").value = "";
+        document.getElementById("etiquetaCheckin").value = "";
+        document.getElementById("tidCheckin").value = "";
+
+    })
+    .withFailureHandler(function(err){
+
+        alert(err.message);
+
+    })
+    .salvarCheckIn(caixa, itensCaixa);
+}
+
+
+// ================= CHECK-OUT =================
+
+function carregarCaixa(){
+
+    let caixa=document.getElementById("cxCheckout").value.trim();
+
+    if(!caixa){
+
+        alert("Informe a caixa.");
+
+        return;
+    }
+
+    google.script.run
+    .withSuccessHandler(function(lista){
+
+        itensAuditoria=lista;
+
+        atualizarListaAuditoria();
+
+    })
+    .buscarCaixa(caixa);
+}
+
+function localizarTid(){
+
+    let tid =
+    document.getElementById("tidCheckout").value.trim();
+
+    if(!tid) return;
+
+    let encontrou = false;
+
+    itensAuditoria.forEach(function(item){
+
+        if(item.tid === tid){
+
+            if(item.status === "LOCALIZADA"){
+
+                alert("TID já foi bipada.");
+
+                encontrou = true;
+
+                return;
+            }
+
+            item.status = "LOCALIZADA";
+
+            encontrou = true;
+        }
+
+    });
+
+    if(!encontrou){
+
+        alert("TID não pertence à caixa.");
+
+    }
+
+    atualizarListaAuditoria();
+
+    document.getElementById("tidCheckout").value="";
+}
+
+function atualizarListaAuditoria(){
+
+    let html="";
+    let localizadas=0;
+
+    itensAuditoria.forEach(function(item){
+
+        if(item.status==="LOCALIZADA"){
+            localizadas++;
+        }
+
+        html += `
+        <div class="item">
+
+            <span>${item.etiqueta} | ${item.tid}</span>
+
+            <span class="${
+                item.status==="LOCALIZADA"
+                ? "badgeVerde"
+                : "badgeVermelha"
+            }">
+
+                ${item.status}
+
+            </span>
+
+        </div>
+        `;
+
+    });
+
+    document.getElementById("listaCheckout").innerHTML=html;
+
+    document.getElementById("contadorCheckout").innerHTML=
+        localizadas+" / "+itensAuditoria.length;
+
+    document.getElementById("btnFinalizar").disabled=
+        localizadas!==itensAuditoria.length;
+}
+
+function finalizarCaixa(){
+
+    let caixa=document.getElementById("cxCheckout").value.trim();
+    let assetTracking=document.getElementById("assetTracking").value.trim();
+
+    if(!assetTracking){
+
+        alert("Informe o Asset Tracking.");
+
+        return;
+    }
+
+    let faltando = itensAuditoria.filter(
+    item => item.status !== "LOCALIZADA"
+);
+
+if(faltando.length > 0){
+
+    alert("Existem TIDs pendentes.");
+
+    return;
+}
+
+    google.script.run
+    .withSuccessHandler(function(){
+
+        alert("Caixa finalizada.");
+
+        itensAuditoria=[];
+
+        atualizarListaAuditoria();
+
+        document.getElementById("cxCheckout").value="";
+        document.getElementById("tidCheckout").value="";
+        document.getElementById("assetTracking").value="";
+
+    })
+    .salvarCheckOut(caixa, assetTracking, itensAuditoria);
+}
+
+function baixarCSV(nomeAba){
+
+    google.script.run
+    .withSuccessHandler(function(csv){
+
+        let blob = new Blob(
+            [csv],
+            {type:"text/csv"}
+        );
+
+        let link = document.createElement("a");
+
+        link.href = URL.createObjectURL(blob);
+
+        link.download = nomeAba + ".csv";
+
+        link.click();
+
+    })
+    .exportarCSV(nomeAba);
+
+}
+
+// ================= CHECK-OUT RM =================
+
+function carregarAssetRM(){
+
+    let asset =
+    document.getElementById("assetRM").value.trim();
+
+    if(!asset){
+
+        alert("Informe o Asset.");
+
+        return;
+    }
+
+    google.script.run
+    .withSuccessHandler(function(lista){
+
+        itensRM = lista;
+
+        atualizarListaRMOut();
+
+    })
+    .buscarAssetTracking(asset);
+}
+
+function validarTidRM(){
+
+    let tid =
+    document.getElementById("tidRM").value.trim();
+
+    if(!tid) return;
+
+    let encontrou = false;
+
+    itensRM.forEach(function(item){
+
+    if(item.tid === tid){
+
+        if(item.status === "VALIDADA"){
+
+            alert("TID já foi bipada.");
+
+            encontrou = true;
+
+            return;
+        }
+
+        item.status = "VALIDADA";
+
+        encontrou = true;
+    }
+
+});
+
+    if(!encontrou){
+
+        alert("TID não encontrada.");
+
+    }
+
+    atualizarListaRMOut();
+
+    document.getElementById("tidRM").value="";
+}
+
+function atualizarListaRMOut(){
+
+    let html = "";
+
+    let validadas = 0;
+
+    itensRM.forEach(function(item){
+
+        if(item.status==="VALIDADA"){
+            validadas++;
+        }
+
+        html += `
+        <div class="item">
+
+            <span>${item.etiqueta} | ${item.tid}</span>
+
+            <span class="${
+                item.status==="VALIDADA"
+                ? "badgeVerde"
+                : "badgeVermelha"
+            }">
+
+                ${item.status}
+
+            </span>
+
+        </div>
+        `;
+
+    });
+
+    document.getElementById("listaRMOut").innerHTML =
+    html;
+
+    document.getElementById("contadorRMOut").innerHTML =
+    validadas + " / " + itensRM.length;
+}
+
+function salvarCheckOutRMFront(){
+
+    let asset =
+    document.getElementById("assetRM").value.trim();
+
+    let faltando =
+    itensRM.filter(x=>x.status!=="VALIDADA");
+
+    if(faltando.length > 0){
+
+        alert("Existem TIDs pendentes.");
+
+        return;
+    }
+
+    google.script.run
+    .withSuccessHandler(function(){
+
+        alert("CHECK-OUT RM finalizado.");
+
+        itensRM = [];
+
+        atualizarListaRMOut();
+
+        document.getElementById("assetRM").value="";
+        document.getElementById("tidRM").value="";
+
+    })
+    .salvarCheckOutRM(asset, itensRM);
+}
+</script>
