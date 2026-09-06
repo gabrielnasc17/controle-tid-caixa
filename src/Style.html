@@ -1,0 +1,303 @@
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f5f7fb;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#1f2937;
+}
+
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:20px auto;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+    padding:25px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.logo img{
+    height:55px;
+}
+
+.logo h1{
+    color:#1e40af;
+    font-size:28px;
+}
+
+.tabs{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.tab{
+    border:none;
+    background:#e5e7eb;
+    color:#374151;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.tab:hover{
+    transform:translateY(-1px);
+}
+
+.tab.active{
+    background:#2563eb;
+    color:white;
+}
+
+.conteudo{
+    display:flex;
+    gap:25px;
+}
+
+.esquerda{
+    width:35%;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+}
+
+.direita{
+    width:65%;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:700;
+    color:#374151;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:15px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+.botao{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.botao:hover{
+    background:#1d4ed8;
+}
+
+.botao:disabled{
+    background:#9ca3af;
+    cursor:not-allowed;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.cardTitulo{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:8px;
+}
+
+.cardValor{
+    font-size:28px;
+    font-weight:bold;
+    color:#111827;
+}
+
+.topoLista{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.lista{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    background:white;
+    height:260px;
+    overflow:auto;
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 15px;
+    border-bottom:1px solid #f3f4f6;
+}
+
+.item:last-child{
+    border-bottom:none;
+}
+
+.badgeVerde{
+    background:#16a34a;
+    color:white;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.badgeVermelha{
+    background:#dc2626;
+    color:white;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.badgeAmarela{
+    background:#f59e0b;
+    color:white;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.tabela{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.tabela th{
+    background:#2563eb;
+    color:white;
+    text-align:left;
+    padding:12px;
+    font-size:14px;
+}
+
+.tabela td{
+    padding:10px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:14px;
+}
+
+.tabela tr:hover{
+    background:#f9fafb;
+}
+
+.footer{
+    margin-top:20px;
+    padding-top:15px;
+    border-top:1px solid #e5e7eb;
+    display:flex;
+    justify-content:space-between;
+    color:#6b7280;
+    font-size:13px;
+}
+
+.statusOnline{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#f3f4f6;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#94a3b8;
+}
+
+@media(max-width:1000px){
+
+    .conteudo{
+        flex-direction:column;
+    }
+
+    .esquerda{
+        width:100%;
+    }
+
+    .direita{
+        width:100%;
+    }
+
+    .tabs{
+        justify-content:center;
+    }
+
+}
+
+/* CHECK-OUT RM */
+
+#checkoutrm .lista{
+    height:400px;
+}
+
+#checkoutrm .item{
+    gap:10px;
+}
+
+#checkoutrm .item span:first-child{
+    flex:1;
+    word-break:break-word;
+}
+
+</style>
+
+style
