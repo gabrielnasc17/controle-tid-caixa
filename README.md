@@ -201,7 +201,7 @@ Tela destinada ao cadastro de etiquetas e inclusão dos TIDs relacionados.
 
 Tela destinada à consulta de etiquetas e validação dos TIDs durante a entrada.
 
-![Tela Entrada DS](docs/images/ENTRADA.PNG)
+![Tela Entrada DS](docs/images/entrada.PNG)
 
 ---
 
@@ -209,7 +209,7 @@ Tela destinada à consulta de etiquetas e validação dos TIDs durante a entrada
 
 Tela destinada à identificação da caixa, conferência e associação dos TIDs.
 
-![Tela Check-in](docs/images/CHECK-IN.PNG)
+![Tela Check-in](docs/images/check-in.PNG)
 
 ---
 
@@ -217,17 +217,8 @@ Tela destinada à identificação da caixa, conferência e associação dos TIDs
 
 Tela destinada à conferência dos itens da caixa e validação da saída.
 
-![Tela Check-out](docs/images/CHECK-OUT.PNG)
+![Tela Check-out](docs/images/check-out.PNG)
 
----
-
-## Check-out RM
-
-Tela destinada à validação final dos TIDs relacionados ao Asset Tracking.
-
-![Tela Check-out RM](docs/images/CHECK-OUT-RM.PNG)
-
----
 
 # 💻 Tecnologias utilizadas
 
