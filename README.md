@@ -1,49 +1,49 @@
-# CONTROLE DE TID E CAIXA
+# Controle de TID e Caixa
 
-SISTEMA WEB DESENVOLVIDO PARA CONTROLE, VALIDAÇÃO E RASTREABILIDADE DE TIDS E CAIXAS DURANTE AS ETAPAS DE ENTRADA, CONFERÊNCIA E SAÍDA.
+Sistema web desenvolvido para controle, validação e rastreabilidade de TIDs e caixas durante as etapas de entrada, conferência e saída.
 
-O PROJETO FOI DESENVOLVIDO UTILIZANDO **GOOGLE APPS SCRIPT, JAVASCRIPT, HTML, CSS E GOOGLE SHEETS**, COM FOCO NA AUTOMAÇÃO DE PROCESSOS OPERACIONAIS, REDUÇÃO DE CONTROLES MANUAIS E MELHORIA DA RASTREABILIDADE DAS INFORMAÇÕES.
+O projeto foi desenvolvido utilizando **Google Apps Script, JavaScript, HTML, CSS e Google Sheets**, com foco na automação de processos operacionais, redução de controles manuais e melhoria da rastreabilidade das informações.
 
-> **PROJETO DEMONSTRATIVO:** ESTA VERSÃO FOI ADAPTADA PARA FINS DE PORTFÓLIO. DADOS, IDENTIFICADORES E INFORMAÇÕES INTERNAS FORAM REMOVIDOS OU SUBSTITUÍDOS POR INFORMAÇÕES FICTÍCIAS.
+> **Projeto demonstrativo:** esta versão foi adaptada para fins de portfólio. Dados, identificadores e informações internas foram removidos ou substituídos por informações fictícias.
 
 ---
 
-## SOBRE O PROJETO
+## Sobre o projeto
 
-O SISTEMA FOI DESENVOLVIDO PARA ORGANIZAR O FLUXO DE TIDS E CAIXAS, PERMITINDO O CONTROLE E A VALIDAÇÃO DOS ITENS EM DIFERENTES ETAPAS DO PROCESSO OPERACIONAL.
+O sistema foi desenvolvido para organizar o fluxo de TIDs e caixas, permitindo o controle e a validação dos itens em diferentes etapas do processo operacional.
 
-A APLICAÇÃO PERMITE ASSOCIAR TIDS A ETIQUETAS E CAIXAS, REALIZAR CONFERÊNCIAS, IDENTIFICAR PENDÊNCIAS E REGISTRAR AS MOVIMENTAÇÕES REALIZADAS.
+A aplicação permite associar TIDs a etiquetas e caixas, realizar conferências, identificar pendências e registrar as movimentações realizadas.
 
-O PROJETO TEM COMO OBJETIVO REDUZIR ERROS DE DIGITAÇÃO, EVITAR DUPLICIDADES E FACILITAR O ACOMPANHAMENTO DAS MOVIMENTAÇÕES.
+O projeto tem como objetivo reduzir erros de digitação, evitar duplicidades e facilitar o acompanhamento das movimentações.
 
-### MÓDULOS PRINCIPAIS
+### Módulos principais
 
 - RM
-- ENTRADA DS
-- CHECK-IN
-- CHECK-OUT
-- CHECK-OUT RM
+- Entrada DS
+- Check-in
+- Check-out
+- Check-out RM
 
 ---
 
-## FLUXO DO SISTEMA
+## Fluxo do sistema
 
-O PROCESSO É ORGANIZADO EM ETAPAS, PERMITINDO QUE OS TIDS SEJAM CONFERIDOS E ASSOCIADOS ÀS RESPECTIVAS CAIXAS AO LONGO DO FLUXO OPERACIONAL.
+O processo é organizado em etapas, permitindo que os TIDs sejam conferidos e associados às respectivas caixas ao longo do fluxo operacional.
 
 ```text
 RM
  │
  ▼
-ENTRADA DS
+Entrada DS
  │
  ▼
-CHECK-IN
+Check-in
  │
  ▼
-CAIXA
+Caixa
  │
  ▼
-CHECK-OUT
+Check-out
  │
  ▼
-CHECK-OUT RM
+Check-out RM
