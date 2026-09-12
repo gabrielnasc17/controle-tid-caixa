@@ -59,7 +59,7 @@ Check-out
 Check-out RM
 ```
 
-Cada etapa possui validações e regras específicas para garantir a integridade das informações ao longo do processo.
+Cada etapa possui validações e regras específicas para garantir a integridade das informações durante o processo.
 
 ---
 
@@ -152,7 +152,7 @@ Principais funções:
 
 # 🔒 Travas e regras de validação
 
-O sistema possui regras de validação e bloqueios para evitar inconsistências e garantir maior controle sobre as movimentações.
+O sistema possui regras de validação e bloqueios para evitar inconsistências nos registros e garantir maior controle sobre as movimentações.
 
 Entre as principais validações estão:
 
@@ -193,7 +193,7 @@ A interface apresenta:
 
 Tela destinada ao cadastro de etiquetas e inclusão dos TIDs relacionados.
 
-![Tela RM](docs/images/RM.PNG)
+![Tela RM](docs/images/rm.png)
 
 ---
 
@@ -201,7 +201,7 @@ Tela destinada ao cadastro de etiquetas e inclusão dos TIDs relacionados.
 
 Tela destinada à consulta de etiquetas e validação dos TIDs durante a entrada.
 
-![Tela Entrada DS](docs/images/entrada.PNG)
+![Tela Entrada DS](docs/images/entrada.png)
 
 ---
 
@@ -209,7 +209,7 @@ Tela destinada à consulta de etiquetas e validação dos TIDs durante a entrada
 
 Tela destinada à identificação da caixa, conferência e associação dos TIDs.
 
-![Tela Check-in](docs/images/check-in.PNG)
+![Tela Check-in](docs/images/check-in.png)
 
 ---
 
@@ -217,8 +217,17 @@ Tela destinada à identificação da caixa, conferência e associação dos TIDs
 
 Tela destinada à conferência dos itens da caixa e validação da saída.
 
-![Tela Check-out](docs/images/check-out.PNG)
+![Tela Check-out](docs/images/check-out.png)
 
+---
+
+## Check-out RM
+
+Tela destinada à validação final dos TIDs relacionados ao Asset Tracking.
+
+> O print desta etapa ainda não foi incluído na versão pública do repositório.
+
+---
 
 # 💻 Tecnologias utilizadas
 
@@ -434,11 +443,10 @@ controle-tid-caixa/
 │
 ├── docs/
 │   └── images/
-│       ├── RM.PNG
-│       ├── ENTRADA.PNG
-│       ├── CHECK-IN.PNG
-│       ├── CHECK-OUT.PNG
-│       └── CHECK-OUT-RM.PNG
+│       ├── rm.png
+│       ├── entrada.png
+│       ├── check-in.png
+│       └── check-out.png
 │
 ├── Code.gs
 ├── Index.html
@@ -454,7 +462,7 @@ Este repositório contém uma versão adaptada para demonstração e portfólio.
 
 Informações, identificadores, dados operacionais e referências internas presentes no sistema original não fazem parte desta versão pública.
 
-O objetivo do projeto é demonstrar a aplicação de tecnologias web na automação, validação e controle de processos operacionais.
+O objetivo do projeto é demonstrar a aplicação de tecnologias web na **automação, validação e controle de processos operacionais**.
 
 ---
 
